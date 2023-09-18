@@ -38,24 +38,32 @@ class NearEarthObject:
         """Create a new `NearEarthObject`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
-        """
-        self.designation = info.get('pdes','')
-        self.name = info.get('name',None)
-        self.diameter = float(info.get('diameter','nan'))
-        self.hazardous = bool(info.get('pha',False))
-
+        """                
+        _info = info['info']
+        _hazardous = True if _info.get('pha') == 'Y' else False
+        _name = None if _info.get('name') == '' else _info.get('name')        
+        _diameter = float('nan') if _info.get('diameter') == '' else float(_info.get('diameter'))
+        self.designation = _info.get('pdes')
+        self.name = _name
+        self.diameter = _diameter
+        self.hazardous = _hazardous
+        self._full_name = _info.get('full_name','')
         # Create an empty initial collection of linked approaches.
         self.approaches = []
 
     @property
     def fullname(self):
-        """Return a representation of the full name of this NEO."""        
-        return f"{self.designation}-{self.name}"
+        """Return a representation of the full name of this NEO."""
+        return f"{self.designation} ({self.name})" if self.name else f"{self.designation}"
+
+    # @fullname.setter
+    # def fullname(self, fullname):
+    #     self.fullname = f"{self.designation} ({self.name})" if self.name else f"{self.designation}"
 
     def __str__(self):
         """Return `str(self)`."""
         hazardous_string = "is" if self.hazardous else "is not"
-        return f"A NearEarthObject with fullname {self.fullname}, a diameter of {self.diameter} and it "\
+        return f"A NearEarthObject with fullname: {self.fullname}, a diameter of {self.diameter} and it "\
             f"{hazardous_string} hazardous."
 
     def __repr__(self):
