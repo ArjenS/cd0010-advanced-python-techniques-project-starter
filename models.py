@@ -56,10 +56,6 @@ class NearEarthObject:
         """Return a representation of the full name of this NEO."""
         return f"{self.designation} ({self.name})" if self.name else f"{self.designation}"
 
-    # @fullname.setter
-    # def fullname(self, fullname):
-    #     self.fullname = f"{self.designation} ({self.name})" if self.name else f"{self.designation}"
-
     def __str__(self):
         """Return `str(self)`."""
         hazardous_string = "is" if self.hazardous else "is not"
@@ -91,11 +87,13 @@ class CloseApproach:
         """Create a new `CloseApproach`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
-        """        
-        self._designation = info.get('des','')
-        self.time = cd_to_datetime(info.get('cd', None)) 
-        self.distance = float(info.get("dist",0.0))
-        self.velocity = float(info.get("v_rel",0.0))
+        """
+        _info = info['info']
+        _time = cd_to_datetime(_info.get('cd')) #if _info.get('cd', None) == None else None
+        self._designation = _info.get('des','')
+        self.time = _time
+        self.distance = float(_info.get("dist",0.0))
+        self.velocity = float(_info.get("v_rel",0.0))
 
         # Create an attribute for the referenced NEO, originally None.                
         self.neo = self._designation

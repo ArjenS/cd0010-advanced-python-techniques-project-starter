@@ -24,8 +24,17 @@ def load_neos(neo_csv_path):
     :param neo_csv_path: A path to a CSV file containing data about near-Earth objects.
     :return: A collection of `NearEarthObject`s.
     """
-    # TODO: Load NEO data from the given CSV file.
-    return ()
+    #    self.designation = info.get('pdes','')
+    #     self.name = info.get('name',None)
+    #     self.diameter = float(info.get('diameter','nan'))
+    #     self.hazardous = bool(info.get('pha',False))
+    neo = []
+    with open(neo_csv_path,'r') as nf:
+        reader = csv.DictReader(nf)        
+        for line in reader:            
+            neo_instance = NearEarthObject(info=line)
+            neo.append(neo_instance)
+    return neo
 
 
 def load_approaches(cad_json_path):
@@ -34,5 +43,15 @@ def load_approaches(cad_json_path):
     :param cad_json_path: A path to a JSON file containing data about close approaches.
     :return: A collection of `CloseApproach`es.
     """
-    # TODO: Load close approach data from the given JSON file.
-    return ()
+    approaches = []
+    with open(cad_json_path,'r') as cf:
+        cad_data = json.load(cf)    
+        keys = cad_data['fields']
+        data = cad_data['data']    
+        _dict = {}
+        for line in data:
+            for i, val in enumerate(line):
+                _dict[keys[i]] = val
+            cad = CloseApproach(info = _dict)
+            approaches.append(cad)
+    return approaches
