@@ -43,7 +43,7 @@ class NearEarthObject:
         _hazardous = True if _info.get('pha') == 'Y' else False
         _name = None if _info.get('name') == '' else _info.get('name')        
         _diameter = float('nan') if _info.get('diameter') == '' else float(_info.get('diameter'))
-        self.designation = _info.get('pdes')
+        self.designation = str(_info.get('pdes'))
         self.name = _name
         self.diameter = _diameter
         self.hazardous = _hazardous
@@ -90,13 +90,13 @@ class CloseApproach:
         """
         _info = info['info']
         _time = cd_to_datetime(_info.get('cd')) #if _info.get('cd', None) == None else None
-        self._designation = _info.get('des','')
+        self._designation = _info['des']
         self.time = _time
         self.distance = float(_info.get("dist",0.0))
         self.velocity = float(_info.get("v_rel",0.0))
 
         # Create an attribute for the referenced NEO, originally None.                
-        self.neo = self._designation
+        self.neo = None
 
     @property
     def time_str(self):

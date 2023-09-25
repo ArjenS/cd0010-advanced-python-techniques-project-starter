@@ -17,7 +17,8 @@ iterator.
 You'll edit this file in Tasks 3a and 3c.
 """
 import operator
-
+import itertools
+from datetime import date
 
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
@@ -71,6 +72,30 @@ class AttributeFilter:
     def __repr__(self):
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
+class DistanceFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.distance
+
+class DateFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+class VelocityFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity
+
+class DiameterFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.diameter
+
+class HazardousFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.hazardous
 
 def create_filters(
         date=None, start_date=None, end_date=None,
@@ -108,8 +133,28 @@ def create_filters(
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
-    return ()
+    filters = []
+    if date is not None:
+        filters.append(DateFilter(op=operator.eq,value=date))
+    if start_date is not None:
+        filters.append(DateFilter(op=operator.ge,value=start_date))
+    if end_date is not None:
+        filters.append(DateFilter(op=operator.le,value=end_date))
+    if distance_min != None:
+        filters.append(DistanceFilter(op=operator.ge,value=distance_min))
+    if distance_max is not None:
+        filters.append(DistanceFilter(op=operator.le,value=distance_max))
+    if velocity_max is not None:
+        filters.append(VelocityFilter(op=operator.le, value=velocity_max))
+    if velocity_min is not None:
+        filters.append(VelocityFilter(op=operator.ge, value=velocity_min))
+    if diameter_max is not None:
+        filters.append(DiameterFilter(op=operator.le, value=diameter_max))
+    if diameter_min is not None:
+        filters.append(DiameterFilter(op=operator.ge, value=diameter_min))
+    if hazardous is not None:
+        filters.append(HazardousFilter(op=operator.eq, value=hazardous))
+    return filters
 
 
 def limit(iterator, n=None):
@@ -122,4 +167,7 @@ def limit(iterator, n=None):
     :yield: The first (at most) `n` values from the iterator.
     """
     # TODO: Produce at most `n` values from the given iterator.
-    return iterator
+    if n == 0 or n == None:        
+        return iterator
+    else:
+        return itertools.islice(iterator,n)
