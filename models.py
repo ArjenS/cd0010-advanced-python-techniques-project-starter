@@ -32,40 +32,51 @@ class NearEarthObject:
     initialized to an empty collection, but eventually populated in the
     `NEODatabase` constructor.
     """
+
     # TODO: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, **info):
         """Create a new `NearEarthObject`.
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
-        """                
-        _info = info['info']
-        _hazardous = True if _info.get('pha') == 'Y' else False
-        _name = None if _info.get('name') == '' else _info.get('name')        
-        _diameter = float('nan') if _info.get('diameter') == '' else float(_info.get('diameter'))
-        self.designation = str(_info.get('pdes'))
+        """
+        _info = info["info"]
+        _hazardous = True if _info.get("pha") == "Y" else False
+        _name = None if _info.get("name") == "" else _info.get("name")
+        _diameter = (
+            float("nan")
+            if _info.get("diameter") == ""
+            else float(_info.get("diameter"))
+        )
+        self.designation = str(_info.get("pdes"))
         self.name = _name
         self.diameter = _diameter
         self.hazardous = _hazardous
-        self._full_name = _info.get('full_name','')
+        self._full_name = _info.get("full_name", "")
         # Create an empty initial collection of linked approaches.
         self.approaches = []
 
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
-        return f"{self.designation} ({self.name})" if self.name else f"{self.designation}"
+        return (
+            f"{self.designation} ({self.name})" if self.name else f"{self.designation}"
+        )
 
     def __str__(self):
         """Return `str(self)`."""
         hazardous_string = "is" if self.hazardous else "is not"
-        return f"A NearEarthObject with fullname: {self.fullname}, a diameter of {self.diameter} and it "\
+        return (
+            f"A NearEarthObject with fullname: {self.fullname}, a diameter of {self.diameter} and it "
             f"{hazardous_string} hazardous."
+        )
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, " \
-               f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+        return (
+            f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, "
+            f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+        )
 
 
 class CloseApproach:
@@ -81,6 +92,7 @@ class CloseApproach:
     private attribute, but the referenced NEO is eventually replaced in the
     `NEODatabase` constructor.
     """
+
     # TODO: How can you, and should you, change the arguments to this constructor?
     # If you make changes, be sure to update the comments in this file.
     def __init__(self, **info):
@@ -88,14 +100,16 @@ class CloseApproach:
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
-        _info = info['info']
-        _time = cd_to_datetime(_info.get('cd')) #if _info.get('cd', None) == None else None
-        self._designation = _info['des']
+        _info = info["info"]
+        _time = cd_to_datetime(
+            _info.get("cd")
+        )  # if _info.get('cd', None) == None else None
+        self._designation = _info["des"]
         self.time = _time
-        self.distance = float(_info.get("dist",0.0))
-        self.velocity = float(_info.get("v_rel",0.0))
+        self.distance = float(_info.get("dist", 0.0))
+        self.velocity = float(_info.get("v_rel", 0.0))
 
-        # Create an attribute for the referenced NEO, originally None.                
+        # Create an attribute for the referenced NEO, originally None.
         self.neo = None
 
     @property
@@ -110,17 +124,21 @@ class CloseApproach:
         The `datetime_to_str` method converts a `datetime` object to a
         formatted string that can be used in human-readable representations and
         in serialization to CSV and JSON files.
-        """    
+        """
         return f"{datetime_to_str(self.time)}"
 
     def __str__(self):
-        """Return `str(self)`."""        
+        """Return `str(self)`."""
         _distince_str = "%.2f" % self.distance
         _velocity_str = "%.2f" % self.velocity
-        return f"A CloseApproach of the object {self.neo} on {self.time}, at a distance of {_distince_str} AU"\
+        return (
+            f"A CloseApproach of the object {self.neo} on {self.time}, at a distance of {_distince_str} AU"
             f" and a velocity of {_velocity_str} km/s."
+        )
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, " \
-               f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+        return (
+            f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
+            f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+        )
