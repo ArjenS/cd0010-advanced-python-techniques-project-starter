@@ -33,8 +33,6 @@ class NearEarthObject:
     `NEODatabase` constructor.
     """
 
-    # TODO: How can you, and should you, change the arguments to this constructor?
-    # If you make changes, be sure to update the comments in this file.
     def __init__(self, **info):
         """Create a new `NearEarthObject`.
 
@@ -93,17 +91,15 @@ class CloseApproach:
     `NEODatabase` constructor.
     """
 
-    # TODO: How can you, and should you, change the arguments to this constructor?
-    # If you make changes, be sure to update the comments in this file.
     def __init__(self, **info):
         """Create a new `CloseApproach`.
-
+    
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
         _info = info["info"]
         _time = cd_to_datetime(
             _info.get("cd")
-        )  # if _info.get('cd', None) == None else None
+        ) 
         self._designation = _info["des"]
         self.time = _time
         self.distance = float(_info.get("dist", 0.0))
