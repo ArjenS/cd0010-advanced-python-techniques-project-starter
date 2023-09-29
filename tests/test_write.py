@@ -96,8 +96,16 @@ class TestWriteToCSV(unittest.TestCase):
             raise self.failureException("write_to_csv produced an invalid CSV format.") from err
 
     def test_csv_data_has_header(self):
+        #self.assertTrue(csv.Sniffer().has_header(self.value)) gave consistent errors even though the resulting csv
+        # had a header equal to the fieldnames. Therefore I replaced the test with one that compares the first line 
+        #with fieldnames. This expands the scope of the test to not only verifying the presence of the header, but als
+        # tests the fields
+        fieldnames = ['datetime_utc', 'distance_au', 'velocity_km_s', 'designation', 'name', 'diameter_km', 'potentially_hazardous']
+        buf = io.StringIO(self.value)
         try:
-            self.assertTrue(csv.Sniffer().has_header(self.value))
+            reader = csv.reader(buf)
+            first_line = [line for line in reader][0]
+            assert first_line == fieldnames, f"First line not equal to fieldnames"
             return
         except csv.Error as err:
             raise self.failureException("Unable to sniff for headers.") from err
