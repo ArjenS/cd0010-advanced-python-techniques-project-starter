@@ -70,7 +70,7 @@ def write_to_json(results, filename):
         line_dict["velocity_km_s"] = line.velocity
         line_dict["neo"] = {}
         line_dict["neo"]["designation"] = line.neo.designation
-        line_dict["neo"]["name"] = line.neo.name
+        line_dict["neo"]["name"] = line.neo.name if line.neo.name else " ", #If line.neo.name is None, then empty string
         line_dict["neo"]["diameter_km"] = line.neo.diameter
         line_dict["neo"]["potentially_hazardous"] = line.neo.hazardous
         output.append(line_dict)
