@@ -33,7 +33,7 @@ def write_to_csv(results, filename):
         "diameter_km",
         "potentially_hazardous",
     )
-    with open(filename, "w",newline='\n') as write_csv:
+    with open(filename, "w") as write_csv:
         csv_writer = csv.writer(write_csv, delimiter=",")
         csv_writer.writerow(fieldnames)
         for line in results:
@@ -43,7 +43,7 @@ def write_to_csv(results, filename):
                     line.time_str,
                     line.velocity,
                     line.neo.designation,
-                    line.neo.name,
+                    line.neo.name if line.neo.name else " ", #If line.neo.name is None, then empty string
                     line.neo.diameter,
                     line.neo.hazardous,
                 ]
