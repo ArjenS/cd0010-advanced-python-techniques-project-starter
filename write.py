@@ -8,11 +8,9 @@ These functions are invoked by the main module with the output of the `limit`
 function and the filename supplied by the user at the command line. The file's
 extension determines which of these functions is used.
 
-You'll edit this file in Part 4.
 """
 import csv
 import json
-
 
 def write_to_csv(results, filename):
     """Write an iterable of `CloseApproach` objects to a CSV file.
@@ -43,7 +41,7 @@ def write_to_csv(results, filename):
                     line.time_str,
                     line.velocity,
                     line.neo.designation,
-                    line.neo.name if line.neo.name else " ", #If line.neo.name is None, then empty string
+                    line.neo.name if line.neo.name else " ",
                     line.neo.diameter,
                     line.neo.hazardous,
                 ]
@@ -70,7 +68,7 @@ def write_to_json(results, filename):
         line_dict["velocity_km_s"] = line.velocity
         line_dict["neo"] = {}
         line_dict["neo"]["designation"] = line.neo.designation
-        line_dict["neo"]["name"] = line.neo.name if line.neo.name else " ", #If line.neo.name is None, then empty string
+        line_dict["neo"]["name"] = "" if line.neo.name is None else line.neo.name
         line_dict["neo"]["diameter_km"] = line.neo.diameter
         line_dict["neo"]["potentially_hazardous"] = line.neo.hazardous
         output.append(line_dict)
