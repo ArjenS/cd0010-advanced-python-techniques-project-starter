@@ -93,13 +93,11 @@ class CloseApproach:
 
     def __init__(self, **info):
         """Create a new `CloseApproach`.
-    
+
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
         _info = info["info"]
-        _time = cd_to_datetime(
-            _info.get("cd")
-        ) 
+        _time = cd_to_datetime(_info.get("cd"))
         self._designation = _info["des"]
         self.time = _time
         self.distance = float(_info.get("dist", 0.0))
