@@ -40,7 +40,6 @@ class NEODatabase:
         :param neos: A collection of `NearEarthObject`s.
         :param approaches: A collection of `CloseApproach`es.
         """
-
         self._neos = {}
         self._approaches = list(approaches)
 
@@ -66,7 +65,6 @@ class NEODatabase:
         :param designation: The primary designation of the NEO to search for.
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
-
         return self._neos.get(designation, None)
 
     def get_neo_by_name(self, name):
@@ -102,7 +100,6 @@ class NEODatabase:
         :param filters: A collection of filters capturing user-specified criteria.
         :return: A stream of matching `CloseApproach` objects.
         """
-
         for approach in self._approaches:
             if all(f(approach) for f in filters):
                 yield approach

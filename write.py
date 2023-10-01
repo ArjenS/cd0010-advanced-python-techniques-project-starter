@@ -12,6 +12,7 @@ extension determines which of these functions is used.
 import csv
 import json
 
+
 def write_to_csv(results, filename):
     """Write an iterable of `CloseApproach` objects to a CSV file.
 

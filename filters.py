@@ -72,36 +72,52 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Produce a representation of the class object."""
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
 
 class DistanceFilter(AttributeFilter):
+    """Expose distance attribute for filter."""
+
     @classmethod
     def get(cls, approach):
+        """Return a single attribute."""
         return approach.distance
 
 
 class DateFilter(AttributeFilter):
+    """Expose date attribute for filter."""
+
     @classmethod
     def get(cls, approach):
+        """Return a single attribute."""
         return approach.time.date()
 
 
 class VelocityFilter(AttributeFilter):
+    """Expose velocity attribute to filter."""
+
     @classmethod
     def get(cls, approach):
+        """Return a single attribute."""
         return approach.velocity
 
 
 class DiameterFilter(AttributeFilter):
+    """Expose diameter attribute to filter."""
+
     @classmethod
     def get(cls, approach):
+        """Return a single attribute."""
         return approach.neo.diameter
 
 
 class HazardousFilter(AttributeFilter):
+    """Expose hazardous attribute to filter."""
+
     @classmethod
     def get(cls, approach):
+        """Return a single attribute."""
         return approach.neo.hazardous
 
 
